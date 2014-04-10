@@ -20,17 +20,16 @@ References:
    - https://developer.mozilla.org/en-US/docs/JSON
    - https://developer.mozilla.org/en-US/docs/JSON#JSON_in_Firefox_2
 */
+
 var fs = require('fs');
 var program = require('commander');
 var cheerio = require('cheerio');
-var HTMLFILE_DEFAULT = "index.html";
-var CHECKSFILE_DEFAULT = "checks.json";
+var util = require('util');
 var rest = require('restler');
 
 
-19. Update grader.js to take either a file or a URL as an input on the command line. 
-Use the restler library from the previous HW to download the URL. Your final output 
-should look like this, except it should include all the checks and not just the one for navigation.
+var HTMLFILE_DEFAULT = "index.html";
+var CHECKSFILE_DEFAULT = "checks.json";
 
 var assertFileExists = function(infile) {
     var instr = infile.toString();
@@ -66,18 +65,30 @@ var clone = function(fn) {
     return fn.bind({});
 };
 
+var loadURL = function() {
+    
+};
+
 if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
         .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
         .option('-u, --url <url>', 'URL to file')
         .parse(process.argv);
-        if(program.url{
-        rest.get(apiurl).on('complete', response2console);
-      }
-    var checkJson = checkHtmlFile(program.file, program.checks);
-    var outJson = JSON.stringify(checkJson, null, 4);
-    console.log(outJson);
+   
+    if (program.url) {
+      rest.get(program.url).on('complete', function(data) {
+        fs.writeFileSync('file.html', data);
+        var checkJson = checkHtmlFile('file.html', program.checks);
+        var outJson = JSON.stringify(checkJson, null, 4);
+        console.log(outJson);
+      });
+    } else {
+      var checkJson = checkHtmlFile(program.file, program.checks);
+      var outJson = JSON.stringify(checkJson, null, 4);
+      console.log(outJson);
+    }
+
 } else {
     exports.checkHtmlFile = checkHtmlFile;
 }
