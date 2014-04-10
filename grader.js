@@ -25,6 +25,12 @@ var program = require('commander');
 var cheerio = require('cheerio');
 var HTMLFILE_DEFAULT = "index.html";
 var CHECKSFILE_DEFAULT = "checks.json";
+var rest = require('restler');
+
+
+19. Update grader.js to take either a file or a URL as an input on the command line. 
+Use the restler library from the previous HW to download the URL. Your final output 
+should look like this, except it should include all the checks and not just the one for navigation.
 
 var assertFileExists = function(infile) {
     var instr = infile.toString();
@@ -64,7 +70,11 @@ if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
         .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
+        .option('-u, --url <url>', 'URL to file')
         .parse(process.argv);
+        if(program.url{
+        rest.get(apiurl).on('complete', response2console);
+      }
     var checkJson = checkHtmlFile(program.file, program.checks);
     var outJson = JSON.stringify(checkJson, null, 4);
     console.log(outJson);
