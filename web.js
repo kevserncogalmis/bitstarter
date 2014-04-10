@@ -1,11 +1,8 @@
 var express = require('express');
-var fs = require('fs');
-var index = fs.readFileSync('index.html');
-var app = express.createServer(express.logger());
+var app = express();
 
-app.get('/', function(request, response) {
-        response.writeHead(200, {'Content-Type': 'html'});
-        response.send(index);
+app.get('/', function(reques, response){
+      response.sendfile(__dirname + '/index.html');
 });
 
 var port = process.env.PORT || 5000;
